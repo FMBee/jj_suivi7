@@ -30,14 +30,16 @@ function createStat() {
 	global $sql_prefix,$db,$tpldir,$tplname;
 	$format = new format;
 	
-	// Si le formulaire est renseigné, ajout en BDD
+	// Si le formulaire est renseignï¿½, ajout en BDD
 	if (isset($_POST) && !empty($_POST['submit'])) {
 		
-		/**** Formater les données ****/
+		/**** Formater les donnï¿½es ****/
+// print_r($_POST);	    
 		foreach ($_POST as $k=>$v) {
-			if (empty($v)) $_POST[$k]="NULL";
+// 			if (empty($v)) $_POST[$k]="NULL";
+			if (empty(trim($v))) $_POST[$k]=0;
 		}
-		$_POST=$format->toMysql($_POST);
+// 		$_POST=$format->toMysql($_POST);
 		extract($_POST);		
 		$id_stage=(int) $id_stage;
 		$id_stagiaire=(int) $id_stagiaire;
@@ -56,12 +58,14 @@ function createStat() {
 
 		$query1="INSERT INTO ".$sql_prefix."stat (`age`, `taille`, `pd_avt`, `pd_apr`, `perte_pd_prc`, `perte_pd_kg`, `grss_avt`, `grss_apr`, `perte_grss`, `h2o_avt`, `h2o_apr`, `perte_h2o`, `grssv_avt`, `grssv_apr`, `mscl_kg_avt`, `mscl_kg_apr`, `mscl_prc_avt`, `mscl_prc_apr`, `gain_mscl`, `mss_oss_avt`, `mss_oss_apr`, `gain_os`, `besoin_enrg_avt`, `besoin_enrg_apr`, `age_met_avt`, `age_met_apr`, `imc_avt`, `imc_apr`, `prof_sport`)
 											VALUES ('$age', '$taille', '$pd_avt', '$pd_apr', '$perte_pd_prc', '$perte_pd_kg', '$grss_avt', '$grss_apr', '$perte_grss', '$h2o_avt', '$h2o_apr', '$perte_h2o', '$grssv_avt', '$grssv_apr', '$mscl_kg_avt', '$mscl_kg_apr', '$mscl_prc_avt', '$mscl_prc_apr', '$gain_mscl', '$mss_oss_avt', '$mss_oss_apr', '$gain_os', '$besoin_enrg_avt', '$besoin_enrg_apr', '$age_met_avt', '$age_met_apr', '$imc_avt', '$imc_apr', '$prof_sport')";
-//		echo $query1;
+		$query1=str_replace('NAN', '0', $query1);
+		$query1=str_replace('NaN', '0', $query1);
+// echo $query1;
 		$db->query($query1);
 		echo $db->error;
 		$autoincremt=$db->insert_id;
 		
-		/* Lier à la table participer */
+		/* Lier ï¿½ la table participer */
 		$query2="UPDATE ".$sql_prefix."participer SET id_stat='$autoincremt'
 		WHERE id_stagiaire='$id_stagiaire' AND id_stage='$id_stage'";	
 		$db->query($query2);
@@ -70,7 +74,7 @@ function createStat() {
 		echo "<div id='retour'>Les statistiques de ce/cette curiste ont bien &eacute;t&eacute; ajout&eacute;es. <a href='?page=stagiaire&action=read&id=".$id_stagiaire."'><img src='tpl/$tplname/img/previous.png' alt='retour' title='Retour' title='Retour' /></a></div>";
 	}
 	
-	// Si le formulaire n'est pas renseigné, on l'ajoute
+	// Si le formulaire n'est pas renseignï¿½, on l'ajoute
 	else {
 		require_once ($tpldir."/forms/statadd.phtml");
 	}
@@ -79,7 +83,7 @@ function createStat() {
 function readStat() {
 	global $db,$sql_prefix,$tplname;
 
-	/* Compter le nombre de stats pour les précédents et suivants */
+	/* Compter le nombre de stats pour les prï¿½cï¿½dents et suivants */
 	$requete2="select count(*) as nbln from ".$sql_prefix."stat";
 	if ($result2 = $db->query($requete2))
 	echo $db->error; 
@@ -104,7 +108,7 @@ function readStat() {
 			echo "Pas de statistiques pour cette cure. <a href='?page=stat&action=create&id_stagiaire=$id_stagiaire&id_stage=$id_stage'><img src='tpl/$tplname/img/create.png' alt='Cr&eacute;er' /></a>";
 			echo "<div id='retour'><a href='?page=stagiaire&action=read&id=".$id_stagiaire."'><img src='tpl/$tplname/img/previous.png' alt='retour' title='Retour' /></a></div>";
 		} else {
-			/* J'affiche tout ou partie des résultats */
+			/* J'affiche tout ou partie des rï¿½sultats */
 			require_once("calcul.class.php");
 			$calcul=new calcul();
 			extract($array);
@@ -157,20 +161,23 @@ function updateStat() {
 	
 	echo "<h2>Statistiques</h2>";
 
-	/* J'ai bien reçu l'id ? */
+	/* J'ai bien reï¿½u l'id ? */
 	if (isset($_GET) && !empty($_GET['id_stat'])) {
 		$id_stat=(int) $_GET['id_stat'];
 
-		/* Le formulaire vient d'être envoyé */
+		/* Le formulaire vient d'ï¿½tre envoyï¿½ */
 		if (isset($_POST) && !empty($_POST['submit'])) {
-			/**** Formater les données ****/
+			/**** Formater les donnï¿½es ****/
 			foreach ($_POST as $k=>$v) {
-				if (empty($v)) $_POST[$k]="NULL";
+				if (empty(trim($v))) $_POST[$k]=0;
 			}
-			$_POST=$format->toMysql($_POST);
+// 			$_POST=$format->toMysql($_POST);
 			extract($_POST);
 
 			$requete1="UPDATE jj_stat SET `age` = '$age',`taille` = '$taille',`pd_avt` = '$pd_avt',`pd_apr` = '$pd_apr',`perte_pd_prc` = '$perte_pd_prc',`perte_pd_kg` = '$perte_pd_kg',`grss_avt` = '$grss_avt',`grss_apr` = '$grss_apr',`perte_grss` = '$perte_grss',`h2o_avt` = '$h2o_avt',`h2o_apr` = '$h2o_apr',`perte_h2o` = '$perte_h2o',`grssv_avt` = '$grssv_avt',`grssv_apr` = '$grssv_apr',`mscl_kg_avt` = '$mscl_kg_avt',`mscl_kg_apr` = '$mscl_kg_apr',`mscl_prc_avt` = '$mscl_prc_avt',`mscl_prc_apr` = '$mscl_prc_apr',`gain_mscl` = '$gain_mscl',`mss_oss_avt` = '$mss_oss_avt',`mss_oss_apr` = '$mss_oss_apr',`gain_os` = '$gain_os',`besoin_enrg_avt` = '$besoin_enrg_avt',`besoin_enrg_apr` = '$besoin_enrg_apr',`age_met_avt` = '$age_met_avt',`age_met_apr` = '$age_met_apr',`imc_avt` = '$imc_avt',`imc_apr` = '$imc_apr',`prof_sport` = '$prof_sport' WHERE `id_stat` =$id_stat;";
+			$requete1=str_replace('NAN', '0', $requete1);
+			$requete1=str_replace('NaN', '0', $requete1);
+// echo $requete1;			
 			$db->query($requete1);
 			echo $db->error;
 
@@ -185,7 +192,7 @@ function updateStat() {
 			echo "Les statistiques pour le/la curiste ont bien &eacute;t&eacute; modifi&eacute;es<br/>
 			<a href='?page=stat&action=read&id_stagiaire=$id_stagiaire&id_stage=$id_stage'><img src='tpl/$tplname/img/previous.png' alt='retour' title='Retour' /></a>";
 		} else {
-			/* Le formulaire n'a pas été envoyé donc on l'affiche */
+			/* Le formulaire n'a pas ï¿½tï¿½ envoyï¿½ donc on l'affiche */
 			//$requete="select * from ".$sql_prefix."stat WHERE id_stat='$id_stat'";
 			$requete = "SELECT * FROM `jj_participer` , jj_stagiaire, jj_stage, jj_stat
 				WHERE jj_participer.id_stat =$id_stat
@@ -200,7 +207,7 @@ function updateStat() {
 		    	$result->close();
 		}
 	} else {
-	/* Je n'ai pas reçu l'id ! */		
+	/* Je n'ai pas reï¿½u l'id ! */		
 		echo "<div id='retour'>Erreur ! <a href='?page=stat'><img src='tpl/$tplname/img/previous.png' alt='retour' title='Retour' /></a></div>";
 	}
 

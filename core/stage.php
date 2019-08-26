@@ -51,7 +51,7 @@ function createStage() {
 		extract($_POST);
 		$date_deb=$format->dateFrToMysql($date_deb);
 		$date_fin=$format->dateFrToMysql($date_fin);
-		$query="insert into ".$sql_prefix."stage values ('','$date_deb','$date_fin','$type')";
+		$query="insert into ".$sql_prefix."stage values (NULL, '$date_deb','$date_fin','$type')";
 		$db->query($query);
 		echo $db->error;
 		echo "<div id='retour'>La cure a bien &eacute;t&eacute; ajout&eacute;e<br /><a href='?page=stage'><img src='tpl/$tplname/img/previous.png' alt='retour' title='Retour' /></a></div>";

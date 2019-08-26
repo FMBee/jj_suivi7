@@ -42,16 +42,16 @@ function createStagiaire() {
 	global $sql_prefix,$db,$tpldir,$tplname;
 	$format=new format;
 	
-	// Si le formulaire est renseigné, ajout en BDD
+	// Si le formulaire est renseignï¿½, ajout en BDD
 	if (isset($_POST) && !empty($_POST['submit'])) {
 		
-		/**** Formater les données ****/
+		/**** Formater les donnï¿½es ****/
 		$_POST=$format->toMysql($_POST);
 		extract($_POST);
 		#$nom=strtolower($nom);
 		#$prenom=strtolower($prenom);
 
-		/* Le nom existe-il déjà ? */
+		/* Le nom existe-il dï¿½jï¿½ ? */
 		$query1="select nom,prenom from  ".$sql_prefix."stagiaire where nom='$nom' and prenom='$prenom'";
 		$result1 = $db->query($query1);
 		echo $db->error;
@@ -59,14 +59,14 @@ function createStagiaire() {
 
 		if ($nbln > 0) echo "<div id='retour'>Le/la curiste existe d&eacute;j&agrave; !<br /><a href='?page=stagiaire'><img src='tpl/$tplname/img/previous.png' alt='retour' title='Retour' /></a></div>";
 		else {
-			$query="insert into ".$sql_prefix."stagiaire values ('','$nom','$prenom','$sexe')";
+			$query="insert into ".$sql_prefix."stagiaire values (NULL,'$nom','$prenom','$sexe')";
 			$db->query($query);
 			echo $db->error;
 			echo "<div id='retour'>Le/la curiste a bien &eacute;t&eacute; ajout&eacute;(e)<br /><a href='?page=stagiaire'><img src='tpl/$tplname/img/previous.png' alt='retour' title='Retour' /></a></div>";
 		}
 	}
 	
-	// Si le formulaire n'est pas renseigné, on l'ajoute
+	// Si le formulaire n'est pas renseignï¿½, on l'ajoute
 	else {
 		require_once ($tpldir."/forms/stagiaireadd.phtml");		
 	}
@@ -78,7 +78,7 @@ function readStagiaire() {
 	$id=NULL;
 	$format=new format;
 
-	/* Compter le nombre de stagiaires pour les précédents et suivants */
+	/* Compter le nombre de stagiaires pour les prï¿½cï¿½dents et suivants */
 	$requete2="select count(*) as nbln from ".$sql_prefix."stagiaire";
 	if ($result2 = $db->query($requete2))
 	echo $db->error;
@@ -98,7 +98,7 @@ function readStagiaire() {
 		$_SESSION['nomprenom']="<h3>$nom $prenom</h3>";
 
 		echo "<div id='stages'><h2>Cures de $prenom $nom</h2>";
-		/* Récupérer les id de stages effectués */
+		/* Rï¿½cupï¿½rer les id de stages effectuï¿½s */
 		$requete="SELECT ".$sql_prefix."stage.* , ".$sql_prefix."participer.type_diete
 			FROM ".$sql_prefix."participer, ".$sql_prefix."stagiaire, ".$sql_prefix."stage
 			WHERE ".$sql_prefix."stagiaire.id_stagiaire =$id
@@ -193,23 +193,23 @@ function updateStagiaire() {
 	global $db,$sql_prefix,$tplname,$tpldir;
 	$format = new format;
 
-	/* J'ai bien reçu l'id ? */
+	/* J'ai bien reï¿½u l'id ? */
 	if (isset($_GET) && !empty($_GET['id'])) {
 		$id=(int) $_GET['id'];
 		
-		/* Le formulaire vient d'être envoyé */
+		/* Le formulaire vient d'ï¿½tre envoyï¿½ */
 		if (isset($_POST) && !empty($_POST['submit'])) {
 		$_POST=$format->toMysql($_POST);
 		extract($_POST);
 	
-			/**** Vérifier les données ****/
+			/**** Vï¿½rifier les donnï¿½es ****/
 
 			$requete="UPDATE ".$sql_prefix."stagiaire SET nom='$nom', prenom='$prenom', sexe='$sexe' WHERE id_stagiaire='$id'";
 			$db->query($requete);
 			echo $db->error;
 			echo "Le/la curiste $id a bien &eacute;t&eacute; modifi&eacute;(e)<br/><a href='?page=stagiaire'><img src='tpl/$tplname/img/previous.png' alt='retour' title='Retour' /></a>";
 		} else {
-			/* Le formulaire n'a pas été envoyé donc on l'affiche */
+			/* Le formulaire n'a pas ï¿½tï¿½ envoyï¿½ donc on l'affiche */
 			$requete="select * from ".$sql_prefix."stagiaire WHERE id_stagiaire='$id'";
 			$result = $db->query($requete);
 			$array = $result->fetch_array();
@@ -219,7 +219,7 @@ function updateStagiaire() {
 		    $result->close();
 		}
 	} else {
-	/* Je n'ai pas reçu l'id ! */		
+	/* Je n'ai pas reï¿½u l'id ! */		
 		echo "<div id='retour'>Erreur ! <a href='?page=stagiaire'><img src='tpl/$tplname/img/previous.png' alt='retour' title='Retour' /></a></div>";
 	}
 
@@ -248,10 +248,10 @@ function associateStagiaire() {
 	global $sql_prefix,$db,$tpldir,$tplname;
 	$format = new format;
 	
-	// Si le formulaire est renseigné, ajout en BDD
+	// Si le formulaire est renseignï¿½, ajout en BDD
 	if (isset($_POST) && !empty($_POST['submit'])) {
 	
-		/**** Formater les données ****/
+		/**** Formater les donnï¿½es ****/
 		$_POST=$format->toMysql($_POST);
 		extract($_POST);
 		$id_stage=(int) $id_stage;
@@ -281,7 +281,7 @@ function associateStagiaire() {
 			echo "<div><a alt='Stats' href='?page=stat&action=create&id_stagiaire=$id_stagiaire&id_stage=$id_stage'>Statistiques : <img src='tpl/$tplname/img/stats.png' alt='Stats' /></a></div>";
 		}
 	}
-	// Si le formulaire n'est pas renseigné, on l'ajoute
+	// Si le formulaire n'est pas renseignï¿½, on l'ajoute
 	else {
 		require_once ($tpldir."/forms/stagiaireassoc.phtml");		
 	}
@@ -307,7 +307,7 @@ function bilanStagiaire() {
 	global $db,$sql_prefix,$tplname,$tpldir;
 
 	if (isset($_GET) && !empty($_GET['id'])) { $id=(int) $_GET['id']; }
-	/* Liste des stages effectués */
+	/* Liste des stages effectuï¿½s */
 	$requete="SELECT ".$sql_prefix."stage.*, type_diete FROM ".$sql_prefix."participer, ".$sql_prefix."stagiaire, ".$sql_prefix."stage
 	WHERE ".$sql_prefix."stagiaire.id_stagiaire =$id
 	AND ".$sql_prefix."participer.id_stagiaire =".$sql_prefix."stagiaire.id_stagiaire
@@ -363,7 +363,7 @@ function bilanStagiaire() {
 			if(!$array2) {
 				echo "Pas de statistiques pour cette cure. <a href='?page=stat&action=create&id_stagiaire=$id&id_stage=$id_stage'><img src='tpl/$tplname/img/create.png' alt='Cr&eacute;er' /></a>";
 			} else {
-				/* J'affiche tout ou partie des résultats */
+				/* J'affiche tout ou partie des rï¿½sultats */
 				require_once("calcul.class.php");
 				$calcul=new calcul();
 				extract($array2);
