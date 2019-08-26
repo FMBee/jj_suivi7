@@ -1,0 +1,223 @@
+<?php
+if (isset($_GET) && !empty($_GET['id_stagiaire'])) $id_stagiaire=(int) $_GET['id_stagiaire'];
+else $id_stagiaire=0;
+if (isset($_GET) && !empty($_GET['id_stage'])) $id_stage=(int) $_GET['id_stage'];
+else $id_stage=0;
+if (isset($_SESSION['type_diete'])&& !empty($_SESSION['type_diete'])) $type_diete=$_SESSION['type_diete'];
+else $type_diete="Cure d&eacute;tox";
+
+$requet1="SELECT nom, prenom from jj_stagiaire where id_stagiaire=$id_stagiaire";
+$requet2="SELECT date_deb, date_fin from jj_stage, jj_participer where jj_stage.id_stage=$id_stage and jj_participer.id_stage=jj_stage.id_stage";
+
+$resul1=$db->query($requet1);
+echo $db->error;
+$resul2=$db->query($requet2);
+echo $db->error;
+$arr1=$resul1->fetch_array();
+$arr2=$resul2->fetch_array();
+extract($arr1);
+extract($arr2);
+
+$format=new format;
+$date_deb=$format->dateMysqlToFr($date_deb);
+$date_fin=$format->dateMysqlToFr($date_fin);
+
+if ($type_diete=="Non d&eacute;fini" || $type_diete==null || $type_diete=="") $type_diete="Cure d&eacute;tox";
+
+echo "<h3>Stats de $prenom $nom</h3>";
+echo "<h3>$type_diete du $date_deb au $date_fin</h3>";
+
+?>
+
+<form id='statadd' action='<?php echo "?page=stat&action=create"; ?>' method="POST">
+
+	<input type='hidden' name='id_stagiaire' value='<?php echo $id_stagiaire; ?>' />
+	<input type='hidden' name='id_stage' value='<?php echo $id_stage; ?>' />
+	<label for='age'>&Acirc;ge</label>
+	<input type='text' name='age' id='age' class="validate[custom[number]]" /><br />
+	<label for='taille'>Taille (m)</label>
+	<input type='text' name='taille' id='taille' class="validate[custom[number]]" /><br />
+	<label for='pd_avt'>Poids &agrave; l'arriv&eacute;e (kg)</label>
+	<input type='text' name='pd_avt' id='pd_avt' class="validate[custom[number]]" /><br />
+	<label for='pd_apr'>Poids au d&eacute;part (kg)</label>
+	<input type='text' name='pd_apr' id='pd_apr' class="validate[custom[number]]" /><br />
+	<label for='perte_pd_prc'>Perte (%)</label>
+	<input type='text' name='perte_pd_prc' id='perte_pd_prc' class="validate[custom[number]]" /><br />
+	<label for='perte_pd_kg'>Perte (kg)</label>
+	<input type='text' name='perte_pd_kg' id='perte_pd_kg' class="validate[custom[number]]" /><br />
+	<label for='grss_avt'>Taux de graisse &agrave; l'arriv&eacute;e (%)</label>
+	<input type='text' name='grss_avt' id='grss_avt' class="validate[custom[number]]" /><br />
+	<label for='grss_apr'>Taux de graisse au d&eacute;part (%)</label>
+	<input type='text' name='grss_apr' id='grss_apr' class="validate[custom[number]]" /><br />
+	<label for='perte_grss'>Perte de graisse (kg)</label>
+	<input type='text' name='perte_grss' id='perte_grss' class="validate[custom[number]]" /><br />
+	<label for='h2o_avt'>Eau &agrave; l'arriv&eacute;e (%)</label>
+	<input type='text' name='h2o_avt' id='h2o_avt' class="validate[custom[number]]" /><br />
+	<label for='h2o_apr'>Eau au d&eacute;part (%)</label>
+	<input type='text' name='h2o_apr' id='h2o_apr' class="validate[custom[number]]" /><br />
+	<label for='perte_h2o'>Perte en eau (l)</label>
+	<input type='text' name='perte_h2o' id='perte_h2o' class="validate[custom[number]]" /><br />
+	<label for='grssv_avt'>Graisse visc&eacute;rale &agrave; l'arriv&eacute;e (indice)</label>
+	<input type='text' name='grssv_avt' id='grssv_avt' class="validate[custom[number]]" /><br />
+	<label for='grssv_apr'>Graisse visc&eacute;rale au d&eacute;part (indice)</label>
+	<input type='text' name='grssv_apr' id='grssv_apr' class="validate[custom[number]]" /><br />
+	<label for='mscl_kg_avt'>Muscles &agrave; l'arriv&eacute;e (kg)</label>
+	<input type='text' name='mscl_kg_avt' id='mscl_kg_avt' class="validate[custom[number]]" /><br />
+	<label for='mscl_kg_apr'>Muscles au d&eacute;part (kg)</label>
+	<input type='text' name='mscl_kg_apr' id='mscl_kg_apr' class="validate[custom[number]]" /><br />
+	<label for='mscl_prc_avt'>Taux de muscle &agrave; l'arriv&eacute;e (%)</label>
+	<input type='text' name='mscl_prc_avt' id='mscl_prc_avt' class="validate[custom[number]]" /><br />
+	<label for='mscl_prc_apr'>Taux de muscle au d&eacute;part (%)</label>
+	<input type='text' name='mscl_prc_apr' id='mscl_prc_apr' class="validate[custom[number]]" /><br />
+	<label for='gain_mscl'>Gain en muscle (%)</label>
+	<input type='text' name='gain_mscl' id='gain_mscl' class="validate[custom[number]]" /><br />
+	<label for='mss_oss_avt'>Masse osseuse &agrave; l'arriv&eacute;e (kg)</label>
+	<input type='text' name='mss_oss_avt' id='mss_oss_avt' class="validate[custom[number]]" /><br />
+	<label for='mss_oss_apr'>Masse osseuse au d&eacute;part (kg)</label>
+	<input type='text' name='mss_oss_apr' id='mss_oss_apr' class="validate[custom[number]]" /><br />
+	<label for='gain_os'>Gain en os (%)</label>
+	<input type='text' name='gain_os' id='gain_os' class="validate[custom[number]]" /><br />
+	<label for='besoin_enrg_avt'>Besoin &eacute;nerg&eacute;tiques &agrave; l'arriv&eacute;e (kcal/j)</label>
+	<input type='text' name='besoin_enrg_avt' id='besoin_enrg_avt' class="validate[custom[number]]" /><br />
+	<label for='besoin_enrg_apr'>Besoin &eacute;nerg&eacute;tiques au d&eacute;part (kcal/j)</label>
+	<input type='text' name='besoin_enrg_apr' id='besoin_enrg_apr' class="validate[custom[number]]" /><br />
+	<label for='age_met_avt'>&Acirc;ge m&eacute;tabolique &agrave; l'arriv&eacute;e (ans)</label>
+	<input type='text' name='age_met_avt' id='age_met_avt' class="validate[custom[number]]" /><br />
+	<label for='age_met_apr'>&Acirc;ge m&eacute;tabolique au d&eacute;part (ans)</label>
+	<input type='text' name='age_met_apr' id='age_met_apr' class="validate[custom[number]]" /><br />
+	<label for='imc_avt'>Indice de masse corporelle &agrave; l'arriv&eacute;e (kg/m2)</label>
+	<input type='text' name='imc_avt' id='imc_avt' class="validate[custom[number]]" /><br />
+	<label for='imc_apr'>Indice de masse corporelle au d&eacute;part (kg/m2)</label>
+	<input type='text' name='imc_apr' id='imc_apr' class="validate[custom[number]]" /><br />
+	<label for='prof_sport'>Nombre de je&ucirc;nes/Detox et profil sportif</label>
+	<input type='text' name='prof_sport' id='prof_sport' /><br />
+
+	<button type='button' id='refresh'>Actualiser</button>
+	<input type='submit' name='submit' value='Cr&eacute;er' />
+</form>
+
+<script>
+// Validation
+$(document).ready(function(){
+    $("#statadd").validationEngine();
+});
+
+// Changement des valeurs
+
+function roundDecimal(nombre){
+    return Math.round( nombre*10 )/10;
+}
+
+$( "#refresh" ).on( "click", function() {
+	// L'ordre est important !!!
+	s=roundDecimal(($( "#pd_avt" ).val() - $( "#pd_apr" ).val()) / $( "#pd_avt" ).val() * 100);
+	$("#perte_pd_prc").val(s);
+	r=roundDecimal($( "#pd_avt" ).val() - $( "#pd_apr" ).val());
+	$("#perte_pd_kg").val(r);
+	t=roundDecimal((($( "#pd_avt" ).val()*$( "#grss_avt" ).val())-($( "#pd_apr" ).val()*$( "#grss_apr" ).val()))/100);
+	$("#perte_grss").val(t);
+	p=roundDecimal(($( "#pd_avt" ).val()*$( "#h2o_avt" ).val() - $( "#pd_apr" ).val()*$( "#h2o_apr" ).val())/100);
+	$("#perte_h2o").val(p);
+	u=roundDecimal($( "#mscl_kg_avt" ).val()/$( "#pd_avt" ).val()*100);
+	$("#mscl_prc_avt").val(u);
+	v=roundDecimal($( "#mscl_kg_apr" ).val()/$( "#pd_apr" ).val()*100);
+	$("#mscl_prc_apr").val(v);
+	w=roundDecimal(($( "#mscl_kg_apr" ).val()/$( "#pd_apr" ).val()-$( "#mscl_kg_avt" ).val()/$( "#pd_avt" ).val())*100);
+	$("#gain_mscl").val(w);
+	o=roundDecimal(($( "#mss_oss_apr" ).val()/$( "#pd_apr" ).val() - $( "#mss_oss_avt" ).val()/$( "#pd_avt" ).val()) * 100);
+	$("#gain_os").val(o);
+	y=roundDecimal($( "#pd_avt" ).val()/($( "#taille" ).val()*$( "#taille" ).val()));
+	$("#imc_avt").val(y);
+	z=roundDecimal($( "#pd_apr" ).val()/($( "#taille" ).val()*$( "#taille" ).val()));
+	$("#imc_apr").val(z);
+});
+
+$( "#taille" ).on( "blur", function() {
+	y=roundDecimal($( "#pd_avt" ).val()/($( "#taille" ).val()*$( "#taille" ).val()));
+	z=roundDecimal($( "#pd_apr" ).val()/($( "#taille" ).val()*$( "#taille" ).val()));
+	$("#imc_avt").val(y);
+	$("#imc_apr").val(z);
+});
+
+$( "#pd_avt" ).on( "blur", function() {
+	r=roundDecimal($( "#pd_avt" ).val() - $( "#pd_apr" ).val());
+	$("#perte_pd_kg").val(r);
+	s=roundDecimal(($( "#pd_avt" ).val() - $( "#pd_apr" ).val()) / $( "#pd_avt" ).val() * 100);
+	$("#perte_pd_prc").val(s);
+	t=roundDecimal((($( "#pd_avt" ).val()*$( "#grss_avt" ).val())-($( "#pd_apr" ).val()*$( "#grss_apr" ).val()))/100);
+	$("#perte_grss").val(t);
+	p=roundDecimal(($( "#pd_avt" ).val()*$( "#h2o_avt" ).val() - $( "#pd_apr" ).val()*$( "#h2o_apr" ).val())/100);
+	$("#perte_h2o").val(p);
+	u=roundDecimal($( "#mscl_kg_avt" ).val()/$( "#pd_avt" ).val()*100);
+	$("#mscl_prc_avt").val(u);
+	w=roundDecimal(($( "#mscl_kg_apr" ).val()/$( "#pd_apr" ).val()-$( "#mscl_kg_avt" ).val()/$( "#pd_avt" ).val())*100);
+	$("#gain_mscl").val(w);
+	o=roundDecimal(($( "#mss_oss_apr" ).val()/$( "#pd_apr" ).val() - $( "#mss_oss_avt" ).val()/$( "#pd_avt" ).val()) * 100);
+	$("#gain_os").val(o);
+	y=roundDecimal($( "#pd_avt" ).val()/($( "#taille" ).val()*$( "#taille" ).val()));
+	$("#imc_avt").val(y);
+});
+
+$( "#pd_apr" ).on( "blur", function() {
+	r=roundDecimal($( "#pd_avt" ).val() - $( "#pd_apr" ).val());
+	$("#perte_pd_kg").val(r);
+	s=roundDecimal(($( "#pd_avt" ).val() - $( "#pd_apr" ).val()) / $( "#pd_avt" ).val() * 100);
+	$("#perte_pd_prc").val(s);
+	t=roundDecimal((($( "#pd_avt" ).val()*$( "#grss_avt" ).val())-($( "#pd_apr" ).val()*$( "#grss_apr" ).val()))/100);
+	$("#perte_grss").val(t);
+	p=roundDecimal(($( "#pd_avt" ).val()*$( "#h2o_avt" ).val() - $( "#pd_apr" ).val()*$( "#h2o_apr" ).val())/100);
+	$("#perte_h2o").val(p);
+	u=roundDecimal($( "#mscl_kg_apr" ).val()/$( "#pd_apr" ).val()*100);
+	$("#mscl_prc_apr").val(u);
+	w=roundDecimal(($( "#mscl_kg_apr" ).val()/$( "#pd_apr" ).val()-$( "#mscl_kg_avt" ).val()/$( "#pd_avt" ).val())*100);
+	$("#gain_mscl").val(w);
+	o=roundDecimal(($( "#mss_oss_apr" ).val()/$( "#pd_apr" ).val() - $( "#mss_oss_avt" ).val()/$( "#pd_avt" ).val()) * 100);
+	$("#gain_os").val(o);
+	z=roundDecimal($( "#pd_apr" ).val()/($( "#taille" ).val()*$( "#taille" ).val()));
+	$("#imc_apr").val(z);
+});
+
+$( "#grss_avt" ).on( "blur", function() {
+	t=roundDecimal((($( "#pd_avt" ).val()*$( "#grss_avt" ).val())-($( "#pd_apr" ).val()*$( "#grss_apr" ).val()))/100);
+	$("#perte_grss").val(t);
+});
+
+$( "#grss_apr" ).on( "blur", function() {
+	t=roundDecimal((($( "#pd_avt" ).val()*$( "#grss_avt" ).val())-($( "#pd_apr" ).val()*$( "#grss_apr" ).val()))/100);
+	$("#perte_grss").val(t);
+});
+
+$( "#mscl_kg_avt" ).on( "blur", function() {
+	u=roundDecimal($( "#mscl_kg_avt" ).val()/$( "#pd_avt" ).val()*100);
+	$("#mscl_prc_avt").val(u);
+	w=roundDecimal(($( "#mscl_kg_apr" ).val()/$( "#pd_apr" ).val()-$( "#mscl_kg_avt" ).val()/$( "#pd_avt" ).val())*100);
+	$("#gain_mscl").val(w);
+});
+
+$( "#mscl_kg_apr" ).on( "blur", function() {
+	v=roundDecimal($( "#mscl_kg_apr" ).val()/$( "#pd_apr" ).val()*100);
+	$("#mscl_prc_apr").val(v);
+	w=roundDecimal(($( "#mscl_kg_apr" ).val()/$( "#pd_apr" ).val()-$( "#mscl_kg_avt" ).val()/$( "#pd_avt" ).val())*100);
+	$("#gain_mscl").val(w);
+});
+
+$( "#mss_oss_avt" ).on( "blur", function() {
+	o=roundDecimal(($( "#mss_oss_apr" ).val()/$( "#pd_apr" ).val() - $( "#mss_oss_avt" ).val()/$( "#pd_avt" ).val()) * 100);
+	$("#gain_os").val(o);
+});
+
+$( "#mss_oss_apr" ).on( "blur", function() {
+	o=roundDecimal(($( "#mss_oss_apr" ).val()/$( "#pd_apr" ).val() - $( "#mss_oss_avt" ).val()/$( "#pd_avt" ).val()) * 100);
+	$("#gain_os").val(o);
+});
+
+$( "#h2o_avt" ).on( "blur", function() {
+	p=roundDecimal(($( "#pd_avt" ).val()*$( "#h2o_avt" ).val() - $( "#pd_apr" ).val()*$( "#h2o_apr" ).val())/100);
+	$("#perte_h2o").val(p);
+});
+
+$( "#h2o_apr" ).on( "blur", function() {
+	p=roundDecimal(($( "#pd_avt" ).val()*$( "#h2o_avt" ).val() - $( "#pd_apr" ).val()*$( "#h2o_apr" ).val())/100);
+	$("#perte_h2o").val(p);
+});
+</script>

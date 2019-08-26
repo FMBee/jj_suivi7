@@ -1,0 +1,160 @@
+@import url('fonts.css');
+
+html {
+    font-size: 87.5%;
+    line-height: 1.5;
+    font-family: sans-serif;
+}
+
+body{
+	font-family: 'Nunito', sans-serif;
+	font-size: 14pt;
+	background:none;
+    background-color: #9cd9e4;
+    color: #2eaadc;
+    margin: 0;
+    text-align: center;
+}
+
+h2, h3, h4 {
+	color: #9ec864;	
+}
+
+a, a:visited, a:hover, a:active {
+    color: #9ec864;	
+}
+
+li {
+	list-style:none;
+}
+
+#page {
+	margin-top: 50px;
+	margin-left:auto;
+	margin-right:auto;
+	width: 1000px;
+	background: #fff url('../img/background-pattern.png');	
+	box-shadow: 0 0 15px #000;
+	border-radius: 15px;
+}
+
+#logo {
+	background: url('../img/logo.gif') no-repeat;
+	background-position: center;
+    background-color: #FFF;		
+	border-radius: 15px 15px 0 0;
+	height:68px;
+	margin-bottom: 0px;
+}
+
+header {
+	height:30px;
+    background-color: #FFF;
+}
+
+header ul {
+    margin-top:0px;
+    margin-left:0px;
+}
+
+header li {
+    list-style: none;
+    display:inline;
+}
+
+#about {
+    text-align: left;
+    margin: 15px 15px 15px 15px;
+}
+
+#home {
+    margin: 100px auto 100px auto;
+}
+
+#home li {
+	list-style: none;
+	height:50px;
+}
+
+#home img {
+	vertical-align: middle;
+}
+
+table {
+	margin-left: auto;
+	margin-right: auto;
+	border-width:1px; 
+	border-style:solid;
+	border-collapse:collapse;
+	background-color:white;
+	border-color:#74bcc9;
+	width:80%;
+}
+
+td {
+	border-width: 0px 1px 0px 1px;
+	border-style:solid; 
+	border-color:#74bcc9;
+	vertical-align: middle;
+	width:12%;
+}
+
+th {
+	border-width: 0px 1px 0px 1px;
+	border-style:solid; 
+	border-color:#74bcc9;
+	background-color:#CCC;
+	vertical-align: middle;
+}
+
+form {
+	width: 400 px;
+}
+
+label {
+	width: 400px;
+	text-align:left;
+}
+
+input, button {
+	background:#CCC;
+	color:#267483;
+	border:1px solid #000;
+	border-radius: 3px;
+	width:80px;
+}
+
+input[type=submit], button {
+	background:#333;
+	border:1px solid #678f97;
+}
+
+footer {
+	height:30px;
+    background-color: #FFF;		
+	border-radius: 0 0 15px 15px;
+}
+
+#retour, #img-static img {
+	margin-top:20px;
+}
+
+.alpha {
+	display:inline;
+}
+
+#col-type {
+	width: 30%;
+}
+
+#pass-form div { 
+   position: relative;
+}
+#pass-form div #letterViewer { 
+   display: none; 
+   position: absolute; 
+   left: 240px; 
+   top: -30px; 
+   width: 100px; 
+   font: bold 72px Helvetica, Sans-Serif; 
+}

@@ -1,0 +1,56 @@
+body { /* Modifications : la couleur de fond de page - la police - l'unité utilisée pour la taille de la police  */
+	font-family: 'Nunito', sans-serif;
+	background-color :#fff;
+	font-size :14pt;
+    line-height: 1.5;
+}
+
+#page { /* Modifications : suppression de la bordure - marges */
+	margin :0;
+	border :none;
+	width: auto;
+	background: #fff;	
+	box-shadow: none;
+	border-radius: 0px;
+}
+
+
+
+#logo, header, footer { /* Les éléments qui ne seront pas affichés  */
+  display :none;
+}
+
+#stages2 {
+	display: inherit;
+}
+
+#retour {
+	display: none;
+}
+
+table {
+	margin-left: auto;
+	margin-right: auto;
+	border-width:1px; 
+	border-style:solid;
+	border-collapse:collapse;
+	background-color:white;
+	border-color:#74bcc9;
+	width:90%;
+}
+
+td {
+	border-width: 0px 1px 0px 1px;
+	border-style:solid; 
+	border-color:#74bcc9;
+	vertical-align: middle;
+}
+
+th {
+	border-width: 0px 1px 0px 1px;
+	border-style:solid; 
+	border-color:#74bcc9;
+	background-color:#CCC;
+	vertical-align: middle;
+}
+

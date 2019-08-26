@@ -1,0 +1,36 @@
+<!--
+	KeepassWeb, un gestionnaire de mots de passe libre
+	Auteur : Nicolas Dewaele
+	Site Web : http://adminrezo.fr/
+-->
+
+<!--
+	Theme Copper :
+	Auteur : Nicolas Dewaele
+	Site Web : http://adminrezo.fr/
+-->
+
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+	<title><?php echo $sitename." - v. ".$version; ?></title>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=100,chrome=1">
+	<meta name="description" content="Statistiques Jolijeune">
+	<meta name="author" content="Nicolas Dewaele">
+	<link rel="shortcut icon" type="image/png" href="<?php echo "$dir/tpl/$tplname$favicon"; ?>">
+	<meta name="viewport" content="width=device-width">
+	<link rel="stylesheet" href="<?php echo "$dir/tpl/$tplname$css"; ?>">
+	<link rel="stylesheet" href="<?php echo "$dir/tpl/".$tplname."/css/print.css"; ?>" media='print'>
+	<link rel="stylesheet" href="<?php echo "$dir/tpl/$tplname/css/validationEngine.jquery.css"; ?>">
+	<script src="lib/jquery.min.js"></script>
+	<script src="lib/jquery.validationEngine-fr.js" type="text/javascript" charset="utf-8"></script>
+	<script src="lib/jquery.validationEngine.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/calculs.js" type="text/javascript" charset="utf-8"></script>
+</head>
+<body>
+	<div id="page">
+		<a href='?'><div id="logo"></div></a>

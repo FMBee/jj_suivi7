@@ -1,0 +1,15 @@
+<form id='stageadd' action='<?php "?page=stage&action=create"; ?>' method="POST">
+	<label for='date_deb'>D&eacute;but :</label>
+	<input type='text' name='date_deb' class="validate[required,custom[date]]" /><br />
+	<label for='date_fin'>Fin :</label>
+	<input type='text' name='date_fin' class="validate[required,custom[date]]" /><br />
+	<label for='type'>Type :</label>
+	<input type="radio" name="type" value="md" checked=checked />Je&ucirc;ne - Mono di&ecirc;te
+	<input type="radio" name="type" value="cd" />Cure d&eacute;tox<br/>
+	<input type='submit' name='submit' value='Ajouter' />
+</form>
+<script>
+$(document).ready(function(){
+    $("#stageadd").validationEngine();
+});
+</script>

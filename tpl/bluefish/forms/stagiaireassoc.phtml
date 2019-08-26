@@ -1,0 +1,62 @@
+<?php
+	if (isset($_GET) && !empty($_GET['id_stagiaire'])) $id_stagiaire=(int) $_GET['id_stagiaire'];
+	else $id_stagiaire=0;
+
+	echo "<form id='stagiaireassoc' action='?page=stagiaire&action=associate' method='POST'>
+		<input type='hidden' name='id_stagiaire' value='$id_stagiaire' />";
+		
+	global $sql_prefix,$db,$tplname;
+	
+	/* Affichage des stages */
+	$requete="SELECT jj_stage . * FROM jj_stage
+		WHERE id_stage NOT IN (
+			SELECT id_stage FROM jj_participer, jj_stagiaire
+			WHERE jj_stagiaire.id_stagiaire =$id_stagiaire
+			AND jj_participer.id_stagiaire=jj_stagiaire.id_stagiaire) order by date_deb desc";
+	$result = $db->query($requete);
+	echo $db->error;
+	$nbln = $result->num_rows;
+	if ($nbln > 0) {
+		echo	"<h4>Choix de la cure</h4>
+		<div id='stages'>
+		<select name='id_stage' id='cure'>";
+		while ($array = $result->fetch_array()) {
+			extract($array);
+			$date = new DateTime($date_deb);
+			$date_deb=$date->format('d/m/Y');
+			$date = new DateTime($date_fin);
+			$date_fin=$date->format('d/m/Y');
+			
+			switch ($type) {
+				case "md": $type="Je&ucirc;ne/Mono-di&egrave;te"; break;
+				case "cd": $type="Cure d&eacute;tox"; break;
+				default : $type="Non renseign&eacute;";
+			}
+	        echo "<option value='$id_stage'>$type du $date_deb au $date_fin</option>";
+	   	}
+		echo "</select>
+		</div>
+		<div id='options1'><h4>Type de cure <img src='tpl/$tplname/img/slide-down-green.png' title='Ouvrir les options'/></h4></div>
+		<div id='options' style='display:none'>
+			<h4>(Uniquement pour les je&ucirc;nes et mono-di&egrave;tes)</h4>
+			<select name='type_diete'>
+				<option>Je&ucirc;ne</option>
+				<option>Mono-di&egrave;te bananes</option>
+				<option>Mono-di&egrave;te jus</option>
+				<option>Mono-di&egrave;te riz</option>
+			</select>
+		</div>
+		<br/>
+		<input type='submit' name='submit' value='Ajouter' />
+		</form>";
+	}
+	else echo "Aucune cure n'a &eacute;t&eacute; cr&eacute;&eacute;e !<br/>
+	<a href='?page=stage'><img src='tpl/$tplname/img/stage.png' alt='Cures' /></a>";
+	
+	$result->close();
+?>
+<script>
+	$( "#options1" ).click(function() {
+		$("#options").slideDown( "slow", function() {});
+	});
+</script>

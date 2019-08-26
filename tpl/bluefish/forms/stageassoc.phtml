@@ -1,0 +1,64 @@
+<H2>Inscrire un(e) curiste</H2>
+<form id='stageassoc' action='<?php "?page=stage&action=associate"; ?>' method="POST">
+
+<?php
+	if (isset($_GET['type']) && $_GET['type']=="md") {
+		$type=htmlentities($_GET['type']);
+		echo "<h4>Type de mono di&egrave;te</h4>
+			<div id='types'>
+				<select name='type_diete'>
+					<option>Je&ucirc;ne</option>
+					<option>Mono-di&egrave;te Bananes</option>
+					<option>Mono-di&egrave;te Jus</option>
+					<option>Mono-di&egrave;te Riz</option>
+				</select>
+			</div>";
+	} else {
+		$type="";
+	}
+?>
+
+<h4>Nom</h4>
+<div id='liste_curistes'>
+<?php
+	if (isset($_GET) && !empty($_GET['id_stage'])) $id_stage=(int) $_GET['id_stage'];
+	else $id_stage=0;
+	if (isset($_GET) && !empty($_GET['lettre'])) $lettre=$_GET['lettre'];
+	else $lettre="A";
+
+	echo "<input type='hidden' name='id_stage' value='$id_stage' />";
+
+	foreach(range('A','Z') as $i) {
+		if ($i==$lettre) echo "<strong>";
+		echo "<a href='?page=stage&action=associate&id_stage=$id_stage&lettre=$i&type=$type'>$i</a>";
+		if ($i==$lettre) echo "</strong>";
+		if ($i != "Z") echo " | ";
+	}
+	echo "<br/>";
+
+	global $sql_prefix,$db,$tplname;
+
+	/* Affichage des stagiaires */
+	$requete="select * from ".$sql_prefix."stagiaire
+		where nom like '$lettre%'
+		and id_stagiaire not in (
+			select ".$sql_prefix."stagiaire.id_stagiaire
+			from ".$sql_prefix."stagiaire, ".$sql_prefix."participer
+			where ".$sql_prefix."stagiaire.id_stagiaire=".$sql_prefix."participer.id_stagiaire
+			and id_stage=$id_stage)
+		order by nom,prenom asc";
+
+	if ($result = $db->query($requete)) {
+		echo $db->error;
+		while ($array = $result->fetch_array()) {
+			extract($array);
+			echo "<input type='radio' value='$id_stagiaire' name='id_stagiaire' />$nom $prenom<br/>";
+		}
+	} else {
+		echo "Aucun(e) curiste pour la lettre $i";
+	}
+	$result->close();		
+?>
+</div>
+	<input type='submit' name='submit' value='Ajouter' />
+</form>

@@ -1,0 +1,15 @@
+<form id='stageupd' action='?page=stage&action=update&id=<?php echo $id; ?>' method="POST">
+	<label for='date_deb'>D&eacute;but :</label>
+	<input type='text' name='date_deb' value='<?php echo $date_deb; ?>' class="validate[required,custom[date]]" /><br />
+	<label for='date_fin'>Fin :</label>
+	<input type='text' name='date_fin' value='<?php echo $date_fin; ?>' class="validate[required,custom[date]]" /><br />
+	<label for='type'>Type :</label>
+	<input type="radio" name="type" value="md" <?php if ($type=="md") echo "checked='checked' "; ?> />Je&ucirc;ne - Mono di&ecirc;te
+	<input type="radio" name="type" value="cd" <?php if ($type=="cd") echo "checked='checked' "; ?> />Cure d&eacute;tox<br/>
+	<input type='submit' name='submit' value='Modifier' />
+</form>
+<script>
+$(document).ready(function(){
+    $("#stageupd").validationEngine();
+});
+</script>

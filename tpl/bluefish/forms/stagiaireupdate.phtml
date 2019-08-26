@@ -1,0 +1,15 @@
+<form id='stagiaireupd' action='?page=stagiaire&action=update&id=<?php echo $id; ?>' method="POST">
+	<label for='nom'>Nom :</label>
+	<input type='text' name='nom' value='<?php echo $nom; ?>' class="validate[required],custom[onlyLetterSp]" /><br />
+	<label for='prenom'>Pr&eacute;nom :</label>
+	<input type='text' name='prenom'value='<?php echo $prenom; ?>' class="validate[required],custom[onlyLetterSp]" /><br />
+	<label for='sexe'>Sexe :</label>
+	<input type="radio" name="sexe" value="M" <?php if($sexe=="M") echo "checked='checked'"; ?> />Homme
+	<input type="radio" name="sexe" value="F" <?php if($sexe=="F") echo "checked='checked'"; ?> />Femme<br />
+	<input type='submit' name='submit' value='Modifier' />
+</form>
+<script>
+$(document).ready(function(){
+    $("#stagiaireupd").validationEngine();
+});
+</script>
