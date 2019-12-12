@@ -8,7 +8,17 @@
 <!-- ... et les JQuery pour finir ... -->
 
 <script>
+
 	$(".delete-link").on("click", null, function(){return confirm("Vous confirmez la suppression ?");});
+
+	$('#filtercure').change(function() {
+
+		$('tr.allcures').hide();
+		$('tr.allcures.'+this.value).show();
+	})
+	$('#filtercure').trigger('change');	// à placer après bien sûr...
+
+
 </script>
 
 </body>

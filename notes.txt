@@ -4,3 +4,5 @@ switch DEV/PROD
 -> modifier db/db.inc.php : données,		inverser Local/Prod
 
 -> modifier core/config.inc.php : nomDomaine, dir		inverser Local/Prod
+
+-> supprimer les vieilles cures (0018)
