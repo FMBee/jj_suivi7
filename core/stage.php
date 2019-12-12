@@ -124,7 +124,7 @@ function readAllStage($debut) {
 		echo "<table>";
         echo "<tr><th id='col-type'>Type</th><th>Du</th><th>Au</th>"
             ."<th><a href='?page=stage&action=create'><img src='tpl/$tplname/img/create.png' alt='create' title='Cr&eacute;er' /></a></th>"
-            ."<th></th></tr>";
+            ."</tr>";
 
 		while ($array = $result->fetch_array()) {
 			extract($array);
@@ -141,9 +141,9 @@ function readAllStage($debut) {
 			}
         	echo "<tr class='allcures $annee'>"
         	    ."<td><a href='?page=stage&action=read&id=$id_stage' title='Voir les curistes'>$type</a></td>"
-                ."<td>$date_deb</td><td>$date_fin</td><td><a href='?page=stage&action=delete&id=$id_stage'>"
-                ."<img class='delete-link' src='tpl/$tplname/img/delete.png' alt='delete' title='Supprimer' /></a></td>"
-                ."<td><a href='?page=stage&action=update&id=$id_stage'><img src='tpl/$tplname/img/update.png' alt='update' title='Modifier' /></a></td>"
+                ."<td>$date_deb</td><td>$date_fin</td>"
+                ."<td><a href='?page=stage&action=delete&id=$id_stage'><img class='delete-link' src='tpl/$tplname/img/delete.png' alt='delete' title='Supprimer' /></a>"
+                ."<a href='?page=stage&action=update&id=$id_stage'><img src='tpl/$tplname/img/update.png' alt='update' title='Modifier' /></a></td>"
                 ."</tr>";
     	}
 		echo "</table>";

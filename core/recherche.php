@@ -31,21 +31,26 @@ function getNames() {
     require_once ("config.inc.php");
     require_once ("../db/db.inc.php");
 
-    $result = [
-        [
-            'value' => 'DUPONT',
-            'data' => '450',
-        ],
-        [
-            'value' => 'DURAND',
-            'data' => '488',
-        ],
-    ];
+    $db = @new mysqli($sql_host, $sql_user, $sql_pass, $sql_db);
+    if ($db->connect_errno) die('Erreur de connexion : ' . $db->connect_errno);
+
+    $seek = "%".trim($_GET['query'])."%";
+    $requete="select * from ".$sql_prefix."stagiaire WHERE nom LIKE '$seek'";
+    $result = $db->query($requete);
+
+    while ( $element = $result->fetch_array() ) {
+
+        $retour[] = [
+            "value" => 	strtoupper($element['nom']).' '.ucfirst($element['prenom']),
+            "data" => $element['id_stagiaire']
+            ];
+    }
 
     echo json_encode(
-        array( 	"query" => "Unit",
-            "suggestions" => $result )
-        );
+        [
+            "query" => "Unit",
+            "suggestions" => $retour
+        ]);
 }
 
 ?>

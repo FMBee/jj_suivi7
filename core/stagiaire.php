@@ -3,7 +3,7 @@
 if (isset($_GET) && !empty($_GET['debut'])) $debut=(int) $_GET['debut'];
 else $debut=0;
 
-if (isset($_GET) && !empty($_GET['action'])) $action=htmlentities($_GET['action']);	
+if (isset($_GET) && !empty($_GET['action'])) $action=htmlentities($_GET['action']);
 else $action="readAll";
 
 switch ($action) {
@@ -37,14 +37,14 @@ switch ($action) {
 }
 
 
-	
+
 function createStagiaire() {
 	global $sql_prefix,$db,$tpldir,$tplname;
 	$format=new format;
-	
+
 	// Si le formulaire est renseign�, ajout en BDD
 	if (isset($_POST) && !empty($_POST['submit'])) {
-		
+
 		/**** Formater les donn�es ****/
 		$_POST=$format->toMysql($_POST);
 		extract($_POST);
@@ -65,10 +65,10 @@ function createStagiaire() {
 			echo "<div id='retour'>Le/la curiste a bien &eacute;t&eacute; ajout&eacute;(e)<br /><a href='?page=stagiaire'><img src='tpl/$tplname/img/previous.png' alt='retour' title='Retour' /></a></div>";
 		}
 	}
-	
+
 	// Si le formulaire n'est pas renseign�, on l'ajoute
 	else {
-		require_once ($tpldir."/forms/stagiaireadd.phtml");		
+		require_once ($tpldir."/forms/stagiaireadd.phtml");
 	}
 }
 
@@ -94,10 +94,14 @@ function readStagiaire() {
 		$array = $result->fetch_array();
 		extract($array);
 		$sexe=$format->sexe($sexe);
-		
+
 		$_SESSION['nomprenom']="<h3>$nom $prenom</h3>";
 
-		echo "<div id='stages'><h2>Cures de $prenom $nom</h2>";
+		$Prenom = ucfirst($prenom);
+		$Nom = strtoupper($nom);
+		echo "<div id='stages'><h2>Cures de $Prenom $Nom &nbsp;&nbsp;&nbsp;";
+		echo "<a href='?page=stagiaire&action=update&id=$id'><img src='tpl/$tplname/img/update.png' alt='update' title='Modifier' /></a></h2>";
+
 		/* R�cup�rer les id de stages effectu�s */
 		$requete="SELECT ".$sql_prefix."stage.* , ".$sql_prefix."participer.type_diete
 			FROM ".$sql_prefix."participer, ".$sql_prefix."stagiaire, ".$sql_prefix."stage
@@ -105,7 +109,7 @@ function readStagiaire() {
 			AND ".$sql_prefix."participer.id_stagiaire =".$sql_prefix."stagiaire.id_stagiaire
 			AND ".$sql_prefix."stage.id_stage = ".$sql_prefix."participer.id_stage
 			ORDER BY ".$sql_prefix."stage.date_deb desc";
-	
+
 		if ($result = $db->query($requete)) {
 			echo $db->error;
 			$i=1;
@@ -126,7 +130,7 @@ function readStagiaire() {
 				$date_deb=$date->format('d/m/Y');
 				$date = new DateTime($date_fin);
 				$date_fin=$date->format('d/m/Y');
-	        	echo "<li>".$type." du ".$date_deb." au ".$date_fin." 
+	        	echo "<li>".$type." du ".$date_deb." au ".$date_fin."
 	        	<a href='?page=stat&id_stagiaire=".$id_stagiaire."&id_stage=".$id_stage."'><img src='tpl/".$tplname."/img/stats.png' alt='Statistiques Poids' title='Statistiques Poids' /></a>
 	        	<a href='?page=stagiaire&action=dissociate&id_stagiaire=".$id_stagiaire."&id_stage=".$id_stage."'><img class='delete-link' src='tpl/".$tplname."/img/delete.png' alt='Suppression' title='Supprimer' /></a></li>";
 				echo "</ul>";
@@ -141,10 +145,10 @@ function readStagiaire() {
 
 	echo "<a href='?page=stagiaire&action=bilan&id=$id_stagiaire'><h2>Fiche bilan<br/>
 			<img src='tpl/$tplname/img/bilan.png' alt='Bilan curiste' /></h2></a>";
-	echo "<div id='retour'><a href='?page=stagiaire'><img src='tpl/$tplname/img/previous.png' alt='retour' title='Retour' /></a></div>";
+	echo "<div id='retour'><a href='?page=recherche'><img src='tpl/$tplname/img/previous.png' alt='retour' title='Retour' /></a></div>";
 }
 
-	
+
 function readAllStagiaire($debut) {
 	global $sql_prefix,$db,$tplname;
 	$format=new format;
@@ -166,7 +170,7 @@ function readAllStagiaire($debut) {
 	/* Affichage des stagiaires */
 	$requete="select * from ".$sql_prefix."stagiaire
 		where nom like '$lettre%' order by nom, prenom asc";
-	
+
 	echo "<table>";
 	echo "<tr><th>Nom</th><th>Pr&eacute;nom</th><th><a href='?page=stagiaire&action=create'><img src='tpl/$tplname/img/create.png' alt='create' title='Cr&eacute;er' /></a></th></tr>";
 	if ($result = $db->query($requete)) {
@@ -174,21 +178,21 @@ function readAllStagiaire($debut) {
 		while ($array = $result->fetch_array()) {
 			extract($array);
         	echo "<tr><td><a href='?page=stagiaire&action=read&id=".$id_stagiaire."' title='Voir ses cures'>".$nom."</a></td><td>".$prenom."</td>
-				<td><a href='?page=stagiaire&action=update&id=$id_stagiaire'><img src='tpl/$tplname/img/update.png' alt='update' title='Modifier' /></a> 
+				<td><a href='?page=stagiaire&action=update&id=$id_stagiaire'><img src='tpl/$tplname/img/update.png' alt='update' title='Modifier' /></a>
 					<a href='?page=stagiaire&action=bilan&id=$id_stagiaire'><img src='tpl/$tplname/img/bilan.png' alt='Bilan' title='Bilan' /></a>
 					<a href='?page=stagiaire&action=delete&id=$id_stagiaire'><img class='delete-link' src='tpl/$tplname/img/delete.png' alt='delete' title='Supprimer' /></a></td></tr>";
     	}
 	} else {
 		echo "<tr><th colspan='3'>Aucun(e) curiste pour la lettre $i</th></tr>";
 	}
-	$result->close();		
+	$result->close();
 	echo "<tr><th>Nom</th><th>Pr&eacute;nom</th><th><a href='?page=stagiaire&action=create'><img src='tpl/$tplname/img/create.png' alt='create' title='Cr&eacute;er' /></a></th></tr>";
 	echo "</table>";
 	echo "</div>";
 	echo "<div id='retour'><a href='?'><img src='tpl/$tplname/img/home.png' alt='home' title='Accueil' /></a></div>";
 }
 
-	
+
 function updateStagiaire() {
 	global $db,$sql_prefix,$tplname,$tpldir;
 	$format = new format;
@@ -196,18 +200,19 @@ function updateStagiaire() {
 	/* J'ai bien re�u l'id ? */
 	if (isset($_GET) && !empty($_GET['id'])) {
 		$id=(int) $_GET['id'];
-		
+
 		/* Le formulaire vient d'�tre envoy� */
 		if (isset($_POST) && !empty($_POST['submit'])) {
 		$_POST=$format->toMysql($_POST);
 		extract($_POST);
-	
+
 			/**** V�rifier les donn�es ****/
 
 			$requete="UPDATE ".$sql_prefix."stagiaire SET nom='$nom', prenom='$prenom', sexe='$sexe' WHERE id_stagiaire='$id'";
 			$db->query($requete);
 			echo $db->error;
-			echo "Le/la curiste $id a bien &eacute;t&eacute; modifi&eacute;(e)<br/><a href='?page=stagiaire'><img src='tpl/$tplname/img/previous.png' alt='retour' title='Retour' /></a>";
+			echo "Le/la curiste $id a bien &eacute;t&eacute; modifi&eacute;(e)<br/><a href='?page=stagiaire&action=read&id=$id'>"
+			    ."<img src='tpl/$tplname/img/previous.png' alt='retour' title='Retour' /></a>";
 		} else {
 			/* Le formulaire n'a pas �t� envoy� donc on l'affiche */
 			$requete="select * from ".$sql_prefix."stagiaire WHERE id_stagiaire='$id'";
@@ -215,17 +220,17 @@ function updateStagiaire() {
 			$array = $result->fetch_array();
 			extract($array);
 	//		echo $id_stagiaire,$nom,$prenom,$sexe,$dob,$adresse,$cp,$ville,$telfixe,$telportable,$mail;
-			require_once ($tpldir."/forms/stagiaireupdate.phtml");		
+			require_once ($tpldir."/forms/stagiaireupdate.phtml");
 		    $result->close();
 		}
 	} else {
-	/* Je n'ai pas re�u l'id ! */		
+	/* Je n'ai pas re�u l'id ! */
 		echo "<div id='retour'>Erreur ! <a href='?page=stagiaire'><img src='tpl/$tplname/img/previous.png' alt='retour' title='Retour' /></a></div>";
 	}
 
 }
 
-	
+
 function deleteStagiaire() {
 	global $db,$sql_prefix,$tplname;
 	if (isset($_GET) && !empty($_GET['id'])) {
@@ -247,19 +252,19 @@ function deleteStagiaire() {
 function associateStagiaire() {
 	global $sql_prefix,$db,$tpldir,$tplname;
 	$format = new format;
-	
+
 	// Si le formulaire est renseign�, ajout en BDD
 	if (isset($_POST) && !empty($_POST['submit'])) {
-	
+
 		/**** Formater les donn�es ****/
 		$_POST=$format->toMysql($_POST);
 		extract($_POST);
 		$id_stage=(int) $id_stage;
 		$id_stagiaire=(int) $id_stagiaire;
 		$type_diete=htmlentities($type_diete);
-		
+
 		/**** Types et sous-types ****/
-		
+
 		$requete2="SELECT type from ".$sql_prefix."stage where id_stage=$id_stage";
 		if ($result2=$db->query($requete2)) {
 			$array2=$result2->fetch_array();
@@ -271,9 +276,9 @@ function associateStagiaire() {
 				$_SESSION['type_diete']=$type_diete;
 			}
 		}
-		$query="insert into ".$sql_prefix."participer values ('$id_stage','$id_stagiaire',NULL,'$soustype')";	
+		$query="insert into ".$sql_prefix."participer values ('$id_stage','$id_stagiaire',NULL,'$soustype')";
 		$db->query($query);
-		
+
 		if ($db->error!="") {
 			echo "<div id='retour'>Erreur : $db->error<br/>
 			<a href='?page=stagiaire&action=read&id=".$id_stagiaire."'><img src='tpl/$tplname/img/previous.png' alt='retour' title='Retour' /></a></div>";
@@ -283,7 +288,7 @@ function associateStagiaire() {
 	}
 	// Si le formulaire n'est pas renseign�, on l'ajoute
 	else {
-		require_once ($tpldir."/forms/stagiaireassoc.phtml");		
+		require_once ($tpldir."/forms/stagiaireassoc.phtml");
 	}
 }
 
@@ -313,19 +318,19 @@ function bilanStagiaire() {
 	AND ".$sql_prefix."participer.id_stagiaire =".$sql_prefix."stagiaire.id_stagiaire
 	AND ".$sql_prefix."stage.id_stage = ".$sql_prefix."participer.id_stage
 	ORDER BY ".$sql_prefix."stage.date_deb desc";
-	
+
 	$requete2="SELECT nom, prenom FROM ".$sql_prefix."stagiaire WHERE id_stagiaire=".$id;
 	$result2 = $db->query($requete2);
 	echo $db->error;
 	$array2 = $result2->fetch_array();
 	extract($array2);
-		
+
 	echo "<div id='stats'><h2>Fiche bilan de $prenom $nom</h2>";
-		
+
 	if ($result = $db->query($requete)) {
 		echo $db->error;
 		$i=1;
-		
+
 		/* BOUCLE DES STAGES */
 		while ($array = $result->fetch_array()) {
 			extract($array);
@@ -348,9 +353,9 @@ function bilanStagiaire() {
 			$date = new DateTime($date_fin);
 			$date_fin=$date->format('d/m/Y');
         		echo "<h3>$type du $date_deb au $date_fin</h3>";
-			
+
 			/* STATS */
-			
+
 			$requete2="SELECT ".$sql_prefix."stat.* FROM ".$sql_prefix."participer, ".$sql_prefix."stagiaire, ".$sql_prefix."stage, ".$sql_prefix."stat
 					WHERE ".$sql_prefix."stagiaire.id_stagiaire =$id
 					AND ".$sql_prefix."stage.id_stage =$id_stage
@@ -380,7 +385,7 @@ function bilanStagiaire() {
 				echo "</table>";
 				echo "<br/><br/>";
 			}
-		    $result2->close();	
+		    $result2->close();
 		}
 	    if ($i == 1) echo "<p>Ce/cette curiste n'a particip&eacute; a aucune cure.</p>";
 	    $result->close();
@@ -389,5 +394,5 @@ function bilanStagiaire() {
 	echo "<div id='img-static'><img src='static/bilan2.png' /><br/><img src='static/bilan.png' /></div>";
 	echo "<div id='retour'><a href='?page=stagiaire&id=$id&action=read'><img src='tpl/$tplname/img/previous.png' alt='retour' title='Retour' /></a></div>";
 }
-	
+
 ?>
