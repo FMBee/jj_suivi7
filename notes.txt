@@ -1,0 +1,5 @@
+
+switch DEV/PROD
+
+-> modifier db/db.inc.php
+-> modifier core/config.inc.php

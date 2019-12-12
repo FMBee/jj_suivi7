@@ -77,7 +77,7 @@ function cpOK($cp) {
 }
 
 function telOK($tel) {
-	if (preg_match("#^\+?[0-9]?[0-9]{10}$#", $sexe)) return true;
+    if (preg_match("#^\+?[0-9]?[0-9]{10}$#", $tel)) return true;
     else return false;
 }
 

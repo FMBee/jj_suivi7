@@ -36,6 +36,7 @@
 	$css="/css/style.css";
 	$favicon="/img/favicon.png";
 
+	
 	/************ LOCAL **************/
 
 	/* Global settings */
