@@ -1,0 +1,34 @@
+
+<br>
+<form id='stagiaireseek' method="POST">
+
+	<label for='nom'>Nom :</label>
+	<input type='text' id='seekname' placeholder='Tapez votre recherche'
+		style='width: 180px'/>
+	<br />
+
+</form>
+<br>
+
+<script>
+
+    $(document).ready(function(){
+
+        $('#seekname').autocomplete({
+
+    	    serviceUrl: 'core/recherche.php?action=getNames',
+    	    minChars: 2,
+    	    showNoSuggestionNotice: true,
+    	    noSuggestionNotice : 'Aucun résultat',
+			onInvalidateSelection: function (){
+			        $('#seekname').val('');
+			    },
+    	    onSelect: function (suggestion) {
+
+            	window.location.href = "index.php?page=stagiaire&action=read&id="+suggestion.data;
+    	    	}
+    	});
+
+    })
+
+</script>
