@@ -37,6 +37,7 @@ function getNames() {
     $seek = "%".trim($_GET['query'])."%";
     $requete="select * from ".$sql_prefix."stagiaire WHERE nom LIKE '$seek'";
     $result = $db->query($requete);
+    $retour = [];
 
     while ( $element = $result->fetch_array() ) {
 
