@@ -6,3 +6,7 @@ switch DEV/PROD
 -> modifier core/config.inc.php : nomDomaine, dir		inverser Local/Prod
 
 -> supprimer les vieilles cures (0018)
+SELECT * FROM jj_stage st
+left join jj_participer pa on st.id_stage = pa.id_stage
+left join jj_stagiaire sg on sg.id_stagiaire = pa.id_stagiaire
+order by st.date_deb, st.id_stage

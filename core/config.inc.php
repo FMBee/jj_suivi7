@@ -1,33 +1,33 @@
 <?php
-	
+
 	/************ TEST **************/
 
 	/* Global settings */
-	
+
 	// $sitename="JoliJe&ucirc;ne";
 	// $version="1";
 	// $domainname="dev.hellosoftware.fr";
 	// $dir="/jj_suivi"; // no slash after
-	// $url="http://".$domainname.$dir; 
+	// $url="http://".$domainname.$dir;
 
 	/* Template */
 
 	// $tplname="bluefish";
 	// $tpldir=$cheminabsolu."/tpl/".$tplname;
 	// $css="/css/style.css";
-	// $favicon="/img/favicon.png"; 
+	// $favicon="/img/favicon.png";
 
-	
-	
+
+
 	/************ PROD **************/
 
 	/* Global settings */
-	
+
 	$sitename="JoliJe&ucirc;ne";
 	$version="V.3";
-	$domainname="vps466100.ovh.net";
+	$domainname="admin-jolijeune.fr";
 	$dir="/jj_suivi"; // no slash after
-	$url="http://".$domainname.$dir;
+	$url="https://".$domainname.$dir;
 
 	/* Template */
 
@@ -36,11 +36,11 @@
 	$css="/css/style.css";
 	$favicon="/img/favicon.png";
 
-	
+
 	/************ LOCAL **************/
 
 	/* Global settings */
-	
+
 	$sitename="Stats JoliJe&ucirc;ne";
 	$version="beta 7";
 	$domainname="localhost";
